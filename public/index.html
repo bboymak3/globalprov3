@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recorda tu Revision - Global Pro Automotriz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #a80000;
+      --red-dark: #800000;
+      --amber: #FFC107;
+      --amber-dark: #e6ac00;
+      --bg: #f5f5f5;
+      --white: #ffffff;
+      --gray-100: #f9fafb;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-800: #1f2937;
+      --green: #059669;
+      --green-bg: #ecfdf5;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--gray-800);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #121212, #1a1a1a);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid var(--red);
+    }
+    .header-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      text-decoration: none;
+    }
+    .header-logo i {
+      font-size: 2rem;
+      color: var(--red);
+    }
+    .header-logo-text {
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+    }
+    .header-logo-sub {
+      font-size: 0.7rem;
+      color: #999;
+      letter-spacing: 1px;
+      display: block;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--red), #d32f2f);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+    }
+    .hero-icon {
+      width: 80px; height: 80px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 2.2rem;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Main Card */
+    .main-container {
+      max-width: 520px;
+      margin: -30px auto 40px;
+      padding: 0 16px;
+      position: relative;
+      z-index: 10;
+    }
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      padding: 32px 24px;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      margin-bottom: 6px;
+    }
+    .form-group label i {
+      color: var(--red);
+      margin-right: 4px;
+    }
+    .input-wrapper {
+      position: relative;
+    }
+    .input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      font-size: 1rem;
+    }
+    .input-wrapper input, .input-wrapper select {
+      width: 100%;
+      padding: 14px 14px 14px 42px;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-wrapper input:focus, .input-wrapper select:focus {
+      border-color: var(--red);
+    }
+    .input-wrapper input.text-transform-upper {
+      text-transform: uppercase;
+    }
+
+    /* Radio buttons */
+    .radio-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .radio-option {
+      flex: 1;
+      position: relative;
+    }
+    .radio-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .radio-option label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .radio-option input:checked + label {
+      border-color: var(--red);
+      background: #fef2f2;
+      color: var(--red);
+    }
+    .radio-option label:hover {
+      border-color: #d1d5db;
+    }
+
+    /* Mes manual (oculto por defecto) */
+    .mes-manual-group {
+      display: none;
+      animation: fadeIn 0.3s;
+    }
+    .mes-manual-group.visible {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Info del mes detectado */
+    .mes-info {
+      background: var(--green-bg);
+      border: 1px solid #a7f3d0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: #065f46;
+      display: none;
+    }
+    .mes-info.visible {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mes-info i {
+      font-size: 1.2rem;
+      color: var(--green);
+    }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 12px;
+      background: var(--gray-100);
+      border-radius: 10px;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--red);
+      flex-shrink: 0;
+    }
+    .checkbox-group label {
+      font-size: 0.85rem;
+      color: var(--gray-600);
+      cursor: pointer;
+    }
+
+    /* Submit button */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-submit:hover {
+      background: var(--red-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(168,0,0,0.3);
+    }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Result messages */
+    .result-box {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      display: none;
+      animation: fadeIn 0.3s;
+    }
+    .result-box.success {
+      background: var(--green-bg);
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+    }
+    .result-box.error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+    }
+    .result-box.visible {
+      display: block;
+    }
+
+    /* Unsubscribe */
+    .unsubscribe-section {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--gray-200);
+    }
+    .unsubscribe-section h3 {
+      font-size: 0.95rem;
+      color: var(--gray-600);
+      margin-bottom: 12px;
+    }
+    .unsubscribe-form {
+      display: flex;
+      gap: 8px;
+    }
+    .unsubscribe-form input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .unsubscribe-form input:focus {
+      border-color: var(--red);
+    }
+    .btn-unsuscribe {
+      padding: 10px 16px;
+      background: #f3f4f6;
+      color: var(--gray-600);
+      border: none;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-unsuscribe:hover {
+      background: #e5e7eb;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 20px;
+      margin-top: 10px;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--red);
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--gray-600);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+    .footer a {
+      color: var(--red);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Testing panel (colapsable) */
+    .testing-toggle {
+      text-align: center;
+      margin: 20px 0 0;
+    }
+    .testing-toggle button {
+      background: none;
+      border: 1px dashed #d1d5db;
+      padding: 8px 20px;
+      border-radius: 8px;
+      color: #9ca3af;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .testing-toggle button:hover {
+      border-color: var(--amber);
+      color: var(--amber-dark);
+    }
+    .testing-panel {
+      display: none;
+      margin-top: 16px;
+      padding: 20px;
+      background: #1a1a1a;
+      border-radius: 12px;
+      color: #e5e7eb;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+    }
+    .testing-panel.visible {
+      display: block;
+    }
+    .testing-panel h4 {
+      color: var(--amber);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+    .testing-panel .btn-test {
+      padding: 8px 16px;
+      background: var(--amber);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    .testing-panel .btn-test:hover {
+      background: var(--amber-dark);
+    }
+    .testing-panel .log-area {
+      margin-top: 10px;
+      padding: 10px;
+      background: #000;
+      border-radius: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      font-size: 0.78rem;
+    }
+    .testing-panel .log-area div {
+      padding: 2px 0;
+      border-bottom: 1px solid #222;
+    }
+    .testing-panel .log-area .log-ok { color: #4ade80; }
+    .testing-panel .log-area .log-err { color: #f87171; }
+    .testing-panel .log-area .log-info { color: #60a5fa; }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <a href="https://mecanico247.com" class="header-logo">
+      <i class="fas fa-wrench"></i>
+      <div>
+        <span class="header-logo-text">GLOBALPRO</span>
+        <span class="header-logo-sub">TALLER MECANICO</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-icon"><i class="fas fa-bell"></i></div>
+    <h1>Recorda tu Revision</h1>
+    <p>Nunca mas te olvides de la revision tecnica de tu vehiculo. Te avisamos por WhatsApp a tiempo.</p>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="main-container">
+    <div class="card">
+
+      <!-- Formulario -->
+      <form id="form-lead" onsubmit="return handleSubmit(event)">
+
+        <!-- Patente -->
+        <div class="form-group">
+          <label><i class="fas fa-car"></i> Patente del vehiculo</label>
+          <div class="input-wrapper">
+            <i class="fas fa-id-card"></i>
+            <input type="text" id="input-patente" placeholder="Ej: ABCD12" required maxlength="10"
+                   class="text-transform-upper" autocomplete="off">
+          </div>
+        </div>
+
+        <!-- Info del mes detectado -->
+        <div class="mes-info" id="mes-info">
+          <i class="fas fa-calendar-check"></i>
+          <span id="mes-info-text">Tu revision vence en <strong>Abril</strong></span>
+        </div>
+
+        <!-- Auto / Manual -->
+        <div class="form-group">
+          <label><i class="fas fa-calendar"></i> Como determinar el mes</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="modo-mes" id="modo-auto" value="auto" checked>
+              <label for="modo-auto"><i class="fas fa-robot"></i> Automatico</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="modo-mes" id="modo-manual" value="manual">
+              <label for="modo-manual"><i class="fas fa-hand-pointer"></i> Manual</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mes manual (oculto) -->
+        <div class="form-group mes-manual-group" id="mes-manual-group">
+          <label><i class="fas fa-calendar-day"></i> Selecciona el mes de revision</label>
+          <div class="input-wrapper">
+            <i class="fas fa-calendar-alt"></i>
+            <select id="select-mes">
+              <option value="">-- Selecciona --</option>
+              <option value="1">Enero</option>
+              <option value="2">Febrero</option>
+              <option value="3">Marzo</option>
+              <option value="4">Abril</option>
+              <option value="5">Mayo</option>
+              <option value="6">Junio</option>
+              <option value="7">Julio</option>
+              <option value="8">Agosto</option>
+              <option value="9">Septiembre</option>
+              <option value="10">Octubre</option>
+              <option value="11">Noviembre</option>
+              <option value="12">Diciembre</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Telefono -->
+        <div class="form-group">
+          <label><i class="fab fa-whatsapp"></i> Tu WhatsApp</label>
+          <div class="input-wrapper">
+            <i class="fas fa-phone"></i>
+            <input type="tel" id="input-telefono" placeholder="Ej: +56 9 1234 5678" required>
+          </div>
+        </div>
+
+        <!-- Consentimiento -->
+        <div class="checkbox-group">
+          <input type="checkbox" id="check-consent" required>
+          <label for="check-consent">Acepto recibir recordatorios de revision tecnica por WhatsApp. Puedo darme de baja cuando quiera.</label>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-submit" id="btn-submit">
+          <i class="fas fa-bell"></i> RECORDARME
+        </button>
+
+        <!-- Resultado -->
+        <div class="result-box" id="result-box"></div>
+      </form>
+
+      <!-- Darse de baja -->
+      <div class="unsubscribe-section">
+        <h3><i class="fas fa-ban"></i> No quieres mas recordatorios?</h3>
+        <div class="unsubscribe-form">
+          <input type="tel" id="input-unsub" placeholder="+56 9 1234 5678">
+          <button class="btn-unsuscribe" onclick="handleUnsubscribe()">DARME DE BAJA</button>
+        </div>
+        <div class="result-box" id="unsub-result" style="margin-top:10px;"></div>
+      </div>
+
+      <!-- Testing panel -->
+      <div class="testing-toggle">
+        <button onclick="document.getElementById('testing-panel').classList.toggle('visible')">
+          <i class="fas fa-flask"></i> Panel de Testing
+        </button>
+      </div>
+      <div class="testing-panel" id="testing-panel">
+        <h4><i class="fas fa-terminal"></i> Endpoints de prueba</h4>
+        <button class="btn-test" onclick="testCheck()">
+          <i class="fas fa-search"></i> Check Patente
+        </button>
+        <button class="btn-test" onclick="testTrigger()">
+          <i class="fas fa-paper-plane"></i> Forzar Envio Recordatorios
+        </button>
+        <button class="btn-test" onclick="testStats()">
+          <i class="fas fa-chart-bar"></i> Ver Stats
+        </button>
+        <div style="margin-top:8px; display:flex; gap:8px;">
+          <input type="text" id="test-patente" placeholder="Patente para test" value="ABCD12"
+                 style="flex:1; padding:8px; background:#222; border:1px solid #444; border-radius:6px; color:#fff; font-size:0.85rem;">
+          <input type="text" id="test-secret" placeholder="CRON_SECRET"
+                 style="flex:1; padding:8px; background:#222; border:1px solid #444; border-radius:6px; color:#fff; font-size:0.85rem;">
+        </div>
+        <div class="log-area" id="test-log"></div>
+      </div>
+
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-number" id="stat-total">-</div>
+        <div class="stat-label">Registrados</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat-mes">-</div>
+        <div class="stat-label">Revisan este mes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Global Pro Automotriz &mdash; Mecanico a domicilio en Santiago<br>
+    <a href="https://mecanico247.com">mecanico247.com</a> |
+    <a href="https://wa.me/56939026185">WhatsApp</a>
+  </div>
+
+  <script>
+    // =========================================================
+    // ELEMENTS
+    // =========================================================
+    const inputPatente = document.getElementById('input-patente');
+    const mesInfo = document.getElementById('mes-info');
+    const mesInfoText = document.getElementById('mes-info-text');
+    const mesManualGroup = document.getElementById('mes-manual-group');
+    const selectMes = document.getElementById('select-mes');
+    const inputTelefono = document.getElementById('input-telefono');
+    const btnSubmit = document.getElementById('btn-submit');
+    const resultBox = document.getElementById('result-box');
+
+    // =========================================================
+    // DETECTAR MES AUTOMATICO AL ESCRIBIR PATENTE
+    // =========================================================
+    let debounceTimer;
+    inputPatente.addEventListener('input', function() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(async () => {
+        const pat = this.value.trim().toUpperCase().replace(/[\s\.\-·]/g, '');
+        if (pat.length < 5) {
+          mesInfo.classList.remove('visible');
+          return;
+        }
+        try {
+          const resp = await fetch('/api/check?patente=' + encodeURIComponent(pat));
+          const data = await resp.json();
+          if (data.success && data.es_auto) {
+            mesInfoText.innerHTML = 'Tu revision vence en <strong>' + data.nombre_mes + '</strong> (detectado por patente)';
+            mesInfo.classList.add('visible');
+            mesManualGroup.classList.remove('visible');
+            document.getElementById('modo-auto').checked = true;
+          } else if (data.success && data.necesita_manual) {
+            mesInfoText.innerHTML = 'Patente con formato nuevo. <strong>Selecciona el mes manualmente</strong>.';
+            mesInfo.classList.add('visible');
+            document.getElementById('modo-manual').checked = true;
+            mesManualGroup.classList.add('visible');
+          } else {
+            mesInfo.classList.remove('visible');
+          }
+        } catch (e) {
+          mesInfo.classList.remove('visible');
+        }
+      }, 400);
+    });
+
+    // =========================================================
+    // RADIO: AUTO / MANUAL
+    // =========================================================
+    document.querySelectorAll('input[name="modo-mes"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.value === 'manual') {
+          mesManualGroup.classList.add('visible');
+          selectMes.required = true;
+        } else {
+          mesManualGroup.classList.remove('visible');
+          selectMes.required = false;
+        }
+      });
+    });
+
+    // =========================================================
+    // SUBMIT FORM
+    // =========================================================
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const patente = inputPatente.value.trim().toUpperCase();
+      const telefono = inputTelefono.value.trim();
+      const modo = document.querySelector('input[name="modo-mes"]:checked').value;
+      const mesManual = modo === 'manual' ? parseInt(selectMes.value) : null;
+
+      if (!patente || !telefono) {
+        showResult('error', 'Completa todos los campos.');
+        return false;
+      }
+      if (modo === 'manual' && (!mesManual || mesManual < 1 || mesManual > 12)) {
+        showResult('error', 'Selecciona un mes valido.');
+        return false;
+      }
+
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = '<span class="spinner"></span> Registrando...';
+      resultBox.classList.remove('visible');
+
+      try {
+        const body = { patente, telefono, mes_manual: mesManual || null };
+        const resp = await fetch('/api/save-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await resp.json();
+
+        if (data.success) {
+          showResult('success',
+            '<i class="fas fa-check-circle"></i> <strong>¡Registrado!</strong><br>' +
+            'Patente: ' + data.patente + '<br>' +
+            'Mes de revision: <strong>' + data.nombre_mes + '</strong><br>' +
+            '<small>' + data.mensaje + '</small>'
+          );
+          inputPatente.value = '';
+          inputTelefono.value = '';
+          mesInfo.classList.remove('visible');
+          loadStats();
+        } else {
+          showResult('error',
+            '<i class="fas fa-exclamation-circle"></i> ' +
+            (data.error || 'Error al registrar. Intenta de nuevo.')
+          );
+        }
+      } catch (err) {
+        showResult('error', '<i class="fas fa-wifi"></i> Error de conexion. Intenta de nuevo.');
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = '<i class="fas fa-bell"></i> RECORDARME';
+      }
+
+      return false;
+    }
+
+    // =========================================================
+    // UNSUBSCRIBE
+    // =========================================================
+    async function handleUnsubscribe() {
+      const tel = document.getElementById('input-unsub').value.trim();
+      if (!tel) { alert('Ingresa tu telefono'); return; }
+      const unsubResult = document.getElementById('unsub-result');
+      try {
+        const resp = await fetch('/api/unsubscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ telefono: tel }),
+        });
+        const data = await resp.json();
+        unsubResult.className = 'result-box visible ' + (data.success ? 'success' : 'error');
+        unsubResult.innerHTML = data.success
+          ? '<i class="fas fa-check"></i> ' + data.mensaje
+          : '<i class="fas fa-times"></i> ' + (data.error || 'Error');
+      } catch {
+        unsubResult.className = 'result-box visible error';
+        unsubResult.innerHTML = 'Error de conexion';
+      }
+    }
+
+    // =========================================================
+    // SHOW RESULT
+    // =========================================================
+    function showResult(type, html) {
+      resultBox.className = 'result-box visible ' + type;
+      resultBox.innerHTML = html;
+    }
+
+    // =========================================================
+    // TESTING FUNCTIONS
+    // =========================================================
+    function testLog(msg, type) {
+      const log = document.getElementById('test-log');
+      const div = document.createElement('div');
+      div.className = 'log-' + (type || 'info');
+      div.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+      log.prepend(div);
+    }
+
+    async function testCheck() {
+      const pat = document.getElementById('test-patente').value.trim();
+      if (!pat) { testLog('Ingresa una patente', 'err'); return; }
+      testLog('Check patente: ' + pat, 'info');
+      try {
+        const r = await fetch('/api/check?patente=' + encodeURIComponent(pat));
+        const d = await r.json();
+        testLog(JSON.stringify(d, null, 2), d.success ? 'ok' : 'err');
+      } catch (e) {
+        testLog('Error: ' + e.message, 'err');
+      }
+    }
+
+    async function testTrigger() {
+      const secret = document.getElementById('test-secret').value.trim();
+      if (!secret) { testLog('Ingresa el CRON_SECRET', 'err'); return; }
+      testLog('Forzando envio de recordatorios...', 'info');
+      try {
+        const r = await fetch('/api/trigger?secret=' + encodeURIComponent(secret));
+        const d = await r.json();
+        testLog(JSON.stringify(d, null, 2), d.success ? 'ok' : 'err');
+      } catch (e) {
+        testLog('Error: ' + e.message, 'err');
+      }
+    }
+
+    async function testStats() {
+      testLog('Consultando stats...', 'info');
+      try {
+        const r = await fetch('/api/stats');
+        const d = await r.json();
+        testLog(JSON.stringify(d, null, 2), 'ok');
+      } catch (e) {
+        testLog('Error: ' + e.message, 'err');
+      }
+    }
+
+    // =========================================================
+    // LOAD STATS ON PAGE LOAD
+    // =========================================================
+    async function loadStats() {
+      try {
+        const r = await fetch('/api/stats');
+        const d = await r.json();
+        if (d.success) {
+          document.getElementById('stat-total').textContent = d.total_registrados;
+          document.getElementById('stat-mes').textContent = d.revisan_este_mes;
+        }
+      } catch {}
+    }
+    loadStats();
+  </script>
+
+</body>
+</html>

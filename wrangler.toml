@@ -1,0 +1,39 @@
+name = "globalprov3"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# ============================================================
+# D1 Database Binding
+# ============================================================
+[[d1_databases]]
+binding = "DB"
+database_name = "tallerv2_db"
+database_id = "cd96d426-3002-4ac0-9d9b-fef5c964313b"
+
+# ============================================================
+# Cron Trigger - Todos los dias a las 09:00 AM Chile
+# UTC 13:00 = Chile 09:00 (invierno UTC-4)
+# UTC 13:00 = Chile 10:00 (verano UTC-3) - aceptable para recordatorio
+# ============================================================
+[triggers]
+crons = ["0 13 * * *"]
+
+# ============================================================
+# Variables de entorno (NO pongas secrets aqui)
+# Estas van en Cloudflare Dashboard > Worker > Settings > Variables
+# o via: wrangler secret put ULTRAMSG_TOKEN
+# ============================================================
+[vars]
+ULTRAMSG_INSTANCE = "instance170592"
+CRON_SECRET = "cambia-esto-por-una-clave-secreta"
+
+# ============================================================
+# Secrets (configurar via dashboard o wrangler secret put):
+#   ULTRAMSG_TOKEN = "4ttte2l7ioc05sm5"
+# ============================================================
+
+# ============================================================
+# Assets - Landing page estatica
+# ============================================================
+[assets]
+directory = "public"
